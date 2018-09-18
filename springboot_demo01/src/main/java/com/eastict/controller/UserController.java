@@ -30,17 +30,18 @@ public class UserController {
 	private UserService userService;
 
 	/**
-	 * 查找所有
+	 * 鏌ユ壘鎵�鏈�
 	 * 
 	 * @return
 	 */
 	@GetMapping("/findAll")
 	public List<User> findAll() {
 		return userService.selectAll();
+		
 	}
 
 	/**
-	 * 查找一个
+	 * 鏌ユ壘涓�涓�
 	 * 
 	 * @return
 	 */
@@ -63,7 +64,7 @@ public class UserController {
 	}
 
 	/**
-	 * 删除一个
+	 * 鍒犻櫎涓�涓�
 	 * 
 	 * @return
 	 */
@@ -87,7 +88,7 @@ public class UserController {
 	}
 
 	/**
-	 * 新增一个
+	 * 鏂板涓�涓�
 	 * 
 	 * @return
 	 */
@@ -111,7 +112,7 @@ public class UserController {
 	}
 
 	/**
-	 * 更改
+	 * 鏇存敼
 	 * 
 	 * @return
 	 */
