@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script src="./js/jquery-3.3.1.js"></script>
+
+<script type="text/javascript">
+	
+	//页面加载函数
+	$(function () {
+		findAll();
+	});
+
+	//新增
+	function addOne() {
+		
+		var datas = {name:$("#name").val()};
+		
+		//alert(JSON.stringify({name:$("#name").val()}));
+		
+		//var name=  $("#name").val();
+		
+		 $.post(
+				$("form").attr("action"),
+				
+				JSON.stringify(datas),
+				
+		function(result) {
+			if(result.success){
+				alert("添加成功"); 
+			}else{
+				alert("添加失败"); 
+			}
+			findAll();
+		},"json"); 
+		
+		$.ajax({
+	        url : "user/addOne",
+	        type : 'post',
+	        data : JSON.stringify(datas),
+	        contentType : 'application/json;charset=utf-8',   //中文需要加上charset=utf-8才正确
+	        success:function(results){
+	        	if(results.success){
+	        		alert("添加成功");
+	        		findAll();
+	        	}else{
+	        		alert("添加失败");
+	        	}
+	        }
+	     });				
+	}
+	
+	//删除
+	function delOne(id) {
+		
+		$.get(
+				"user/delOne/"+id,
+				{}, 				
+		function(result) {
+			if(result.success){
+				alert("删除成功"); 
+			}else{
+				alert("删除失败"); 
+			}
+			findAll();
+		}, "json");
+		
+		
+	}
+		
+	//更改
+	function updateOne(id) {
+		
+		/* $.post(
+				"user/updateOne",
+				{
+				 //id:$("#updateId").val(),name:$("#updateName").val()
+				 id:id,name:$("#"+id).val()
+				}, 				
+		function(result) {
+			
+			if(result.success){
+				alert("更新成功"); 
+				}else{
+				alert("更新失败"); 
+				}		
+			findAll();	
+		}, "json"); */
+		
+		$.ajax({
+	        url : "user/updateOne",
+	        type : 'post',
+	        data : JSON.stringify(
+	        		{
+				 //id:$("#updateId").val(),name:$("#updateName").val()
+				 id:id,name:$("#"+id).val()
+				    }
+	        		),
+	        contentType : 'application/json;charset=utf-8',   //中文需要加上charset=utf-8才正确
+	        success:function(results){
+	        	if(results.success){
+	        		alert("更新成功");
+	        		findAll();
+	        	}else{
+	        		alert("更新失败");
+	        	}
+	        }
+	     });			
+	}
+	
+	//查找所有
+	function findAll() {
+		
+		$.get(
+				"user/findAll",
+				{}, 				
+		function(result) {
+			
+			var temp = "<tr>"+"<td>"+"id"+"</td>"+"<td>"+"name"+"</td>"+"<td>"+"操作"+"</td>"+"</tr>";
+										
+			/* for (var i = 0; i < result.length; i++) {
+								
+				temp+="<tr>"+"<td>"+result[i].id+"</td>"+"<td>"+result[i].name+"</td>"+"</tr>"				
+			} */
+			
+		/* 	$.each(result,function(index, val) {
+				temp+="<tr>"+
+				"<td>"+val.id+"</td>"+
+				"<td>"+'<input type="text"value='+val.name+'>'+"</td>"+
+				"<td>"+'<input type="button"value="删除" onclick="delOne('+val.id+')"><input type="button"value="修改" onclick="updateOne('+val.id+','+val.name+')">'+"</td>"+
+				"</tr>"								
+			}) */
+			
+			$.each(result,function(index, val) {
+				temp+="<tr>"+
+				"<td>"+val.id+"</td>"+
+				"<td>"+'<input id='+val.id+' type="text" value='+val.name+'>'+"</td>"+
+				"<td>"+'<input type="button"value="删除" onclick="delOne('+val.id+')"><input type="button"value="修改" onclick="updateOne('+val.id+')">'+"</td>"+
+				"</tr>"								
+			})
+			
+			$("#allUser").html(temp);	
+		
+		}, "json");
+	}
+	
+</script>
+
+</head>
+<body>
+
+	<h4>新增</h4>
+	<form id="ff" action="user/addOne">
+		name: <input id="name" type="text">
+		<input type="button"value="提交" onclick="addOne()"><br/> 
+	</form>
+	<hr>
+	<!-- 所有内容 -->
+	<div >
+	 <table id="allUser" border="1"></table>
+	</div>
+						
+</body>
+</html>
